@@ -4,14 +4,14 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { User } from '../../domain/user.entity';
-import { CreateUserUseCase } from '../../application/use-cases/create-user.use-case';
-import { GetUserUseCase } from '../../application/use-cases/get-user.use-case';
+import { GetUserUseCase } from '../../application/use-cases/queries/get-user.use-case';
 import { UpdateUserDto } from '../../application/dtos/update-user.dto';
-import { UpdateUserUseCase } from '../../application/use-cases/update-user.use-case';
-import { DeleteUserUseCase } from '../../application/use-cases/delete-user.use-case';
-import { GetAllUsersUseCase } from '../../application/use-cases/get-all-users.use-case';
+import { UpdateUserUseCase } from '../../application/use-cases/commands/update-user.use-case';
+import { GetAllUsersUseCase } from '../../application/use-cases/queries/get-all-users.use-case';
 import { CreateUserDto } from '../../application/dtos/create-user.dto';
-import { GetUserByEmailUseCase } from '../../application/use-cases/get-user-by-email.use-case';
+import { GetUserByEmailUseCase } from '../../application/use-cases/queries/get-user-by-email.use-case';
+import { CreateUserUseCase } from '../../application/use-cases/commands/create-user.use-case';
+import { DeleteUserUseCase } from '../../application/use-cases/commands/delete-user.use-case';
 
 @Injectable()
 export class UserService {

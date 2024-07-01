@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UpdateUserUseCase } from './update-user.use-case';
-import { User } from '../../domain/user.entity';
-import { IUserRepository } from '../../domain/user.repository.interface';
+import { User } from '../../../domain/user.entity';
+import { IUserRepository } from '../../../domain/user.repository.interface';
 import { CreateUserUseCase } from './create-user.use-case';
 
 describe('UpdateUserUseCase', () => {

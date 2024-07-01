@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserService } from './user.service';
 import { CreateUserUseCase } from '../../application/use-cases/create-user.use-case';
-import { GetUserUseCase } from '../../application/use-cases/get-user.use-case';
-import { UpdateUserUseCase } from '../../application/use-cases/update-user.use-case';
+import { GetUserUseCase } from '../../application/use-cases/queries/get-user.use-case';
+import { UpdateUserUseCase } from '../../application/use-cases/commands/update-user.use-case';
 import { DeleteUserUseCase } from '../../application/use-cases/delete-user.use-case';
-import { GetAllUsersUseCase } from '../../application/use-cases/get-all-users.use-case';
+import { GetAllUsersUseCase } from '../../application/use-cases/queries/get-all-users.use-case';
 
 describe('UserService', () => {
   let userService: UserService;

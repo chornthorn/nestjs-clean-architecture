@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { User } from '../../domain/user.entity';
+import { User } from '../../../domain/user.entity';
 import { GetAllUsersUseCase } from './get-all-users.use-case';
-import { IUserRepository } from '../../domain/user.repository.interface';
+import { IUserRepository } from '../../../domain/user.repository.interface';
 import { CreateUserUseCase } from './create-user.use-case';
 
 describe('FindAllUsersUseCase', () => {
