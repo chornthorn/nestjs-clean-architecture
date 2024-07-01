@@ -11,6 +11,7 @@ import { UpdateUserUseCase } from '../../application/use-cases/update-user.use-c
 import { DeleteUserUseCase } from '../../application/use-cases/delete-user.use-case';
 import { GetAllUsersUseCase } from '../../application/use-cases/get-all-users.use-case';
 import { CreateUserDto } from '../../application/dtos/create-user.dto';
+import { GetUserByEmailUseCase } from '../../application/use-cases/get-user-by-email.use-case';
 
 @Injectable()
 export class UserService {
@@ -20,6 +21,7 @@ export class UserService {
     private readonly updateUserUseCase: UpdateUserUseCase,
     private readonly deleteUserUseCase: DeleteUserUseCase,
     private readonly getAllUsersUseCase: GetAllUsersUseCase,
+    private readonly getUserByEmailUseCase: GetUserByEmailUseCase,
   ) {}
 
   async getAllUsers(): Promise<User[]> {
@@ -27,8 +29,15 @@ export class UserService {
   }
 
   async createUser(createUserDto: CreateUserDto): Promise<User> {
+    // check if user already exists
+    const user = await this.getUserByEmailUseCase.execute(createUserDto.email);
+
+    if (user) {
+      throw new BadRequestException('User already exists');
+    }
+
     try {
-      return this.createUserUseCase.execute(createUserDto);
+      return await this.createUserUseCase.execute(createUserDto);
     } catch (error) {
       throw new BadRequestException(error.message);
     }

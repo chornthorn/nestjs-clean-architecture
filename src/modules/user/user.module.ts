@@ -7,6 +7,7 @@ import { GetAllUsersUseCase } from './application/use-cases/get-all-users.use-ca
 import { UpdateUserUseCase } from './application/use-cases/update-user.use-case';
 import { DeleteUserUseCase } from './application/use-cases/delete-user.use-case';
 import { UserRepository } from './infrastructure/persistence/user.repository';
+import { GetUserByEmailUseCase } from './application/use-cases/get-user-by-email.use-case';
 
 @Module({
   imports: [],
@@ -19,6 +20,7 @@ import { UserRepository } from './infrastructure/persistence/user.repository';
     GetAllUsersUseCase,
     UpdateUserUseCase,
     DeleteUserUseCase,
+    GetUserByEmailUseCase,
     {
       provide: 'IUserRepository',
       useClass: UserRepository,
