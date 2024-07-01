@@ -1,6 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserService } from './user.service';
-import { UserRepositoryMock } from '../database/user.repository.mock';
 import { CreateUserUseCase } from '../../application/use-cases/create-user.use-case';
 import { GetUserUseCase } from '../../application/use-cases/get-user.use-case';
 import { UpdateUserUseCase } from '../../application/use-cases/update-user.use-case';

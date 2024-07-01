@@ -1,25 +1,28 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { DeleteUserUseCase } from './delete-user.use-case';
-import { UserRepositoryMock } from '../../infrastructure/database/user.repository.mock';
 import { User } from '../../domain/user.entity';
+import { CreateUserUseCase } from './create-user.use-case';
+import { IUserRepository } from '../../domain/user.repository.interface';
+import { DeleteUserUseCase } from './delete-user.use-case';
 
 describe('DeleteUserUseCase', () => {
   let deleteUserUseCase: DeleteUserUseCase;
-  let userRepository: UserRepositoryMock;
+  let userRepository: IUserRepository;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        DeleteUserUseCase,
+        CreateUserUseCase,
         {
           provide: 'IUserRepository',
-          useClass: UserRepositoryMock,
+          useValue: {
+            save: jest.fn(),
+          },
         },
       ],
     }).compile();
 
     deleteUserUseCase = module.get<DeleteUserUseCase>(DeleteUserUseCase);
-    userRepository = module.get<UserRepositoryMock>('IUserRepository');
+    userRepository = module.get<IUserRepository>('IUserRepository');
   });
 
   it('should delete a user', async () => {

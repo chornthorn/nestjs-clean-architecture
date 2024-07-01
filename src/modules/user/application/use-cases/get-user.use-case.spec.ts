@@ -1,25 +1,28 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { GetUserUseCase } from './get-user.use-case';
-import { UserRepositoryMock } from '../../infrastructure/database/user.repository.mock';
 import { User } from '../../domain/user.entity';
+import { IUserRepository } from '../../domain/user.repository.interface';
+import { CreateUserUseCase } from './create-user.use-case';
 
 describe('GetUserUseCase', () => {
   let getUserUseCase: GetUserUseCase;
-  let userRepository: UserRepositoryMock;
+  let userRepository: IUserRepository;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        GetUserUseCase,
+        CreateUserUseCase,
         {
           provide: 'IUserRepository',
-          useClass: UserRepositoryMock,
+          useValue: {
+            save: jest.fn(),
+          },
         },
       ],
     }).compile();
 
     getUserUseCase = module.get<GetUserUseCase>(GetUserUseCase);
-    userRepository = module.get<UserRepositoryMock>('IUserRepository');
+    userRepository = module.get<IUserRepository>('IUserRepository');
   });
 
   it('should get a user by id', async () => {

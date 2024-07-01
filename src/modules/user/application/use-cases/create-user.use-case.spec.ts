@@ -1,33 +1,65 @@
+import { Test, TestingModule } from '@nestjs/testing';
 import { CreateUserUseCase } from './create-user.use-case';
-import { UserRepositoryMock } from '../../infrastructure/database/user.repository.mock';
+import { IUserRepository } from '../../domain/user.repository.interface';
+import { User } from '../../domain/user.entity';
+import { CreateUserDto } from '../dtos/create-user.dto';
+
+const user = {
+  id: '1',
+  name: 'John Doe',
+  email: 'jonhdoe@example.com',
+  password: 'password',
+};
 
 describe('CreateUserUseCase', () => {
   let createUserUseCase: CreateUserUseCase;
-  let userRepository: UserRepositoryMock;
+  let userRepository: IUserRepository;
 
-  beforeEach(() => {
-    userRepository = new UserRepositoryMock();
-    createUserUseCase = new CreateUserUseCase(userRepository);
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [
+        CreateUserUseCase,
+        {
+          provide: 'IUserRepository',
+          useValue: {
+            save: jest.fn(),
+          },
+        },
+      ],
+    }).compile();
+
+    createUserUseCase = module.get<CreateUserUseCase>(CreateUserUseCase);
+    userRepository = module.get<IUserRepository>('IUserRepository');
   });
 
   it('should create a user successfully', async () => {
-    const name = 'John Doe';
-    const email = 'john.doe@example.com';
-    const password = '123456';
-    const user = await createUserUseCase.execute({ name, email, password });
+    const userDto: CreateUserDto = {
+      ...user,
+    };
+    const expectedUser: User = {
+      ...user,
+    };
 
-    expect(user.name).toBe(name);
-    expect(user.email).toBe(email);
-    expect(user.password).toBe(password);
+    jest.spyOn(userRepository, 'save').mockResolvedValueOnce(expectedUser);
+
+    const result = await createUserUseCase.execute(userDto);
+
+    expect(result).toEqual(expectedUser);
+    expect(userRepository.save).toHaveBeenCalledWith(userDto);
   });
 
-  it('should call userRepository.save with a new user', async () => {
-    const saveSpy = jest.spyOn(userRepository, 'save');
-    const name = 'Jane Doe';
-    const email = 'jane.doe@example.com';
-    const password = '123456';
-    await createUserUseCase.execute({ name, email, password });
+  it('should throw an error when user creation fails', async () => {
+    const userDto: CreateUserDto = {
+      ...user,
+    };
 
-    expect(saveSpy).toHaveBeenCalled();
+    jest
+      .spyOn(userRepository, 'save')
+      .mockRejectedValueOnce(new Error('Failed to create user'));
+
+    await expect(createUserUseCase.execute(userDto)).rejects.toThrow(
+      'Failed to create user',
+    );
+    expect(userRepository.save).toHaveBeenCalledWith(userDto);
   });
 });

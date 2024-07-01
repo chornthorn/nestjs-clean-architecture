@@ -1,12 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserController } from './user.controller';
 import { UserService } from '../infrastructure/services/user.service';
-import { GetAllUsersUseCase } from '../application/use-cases/get-all-users.use-case';
-import { DeleteUserUseCase } from '../application/use-cases/delete-user.use-case';
-import { UserRepositoryMock } from '../infrastructure/database/user.repository.mock';
-import { CreateUserUseCase } from '../application/use-cases/create-user.use-case';
-import { GetUserUseCase } from '../application/use-cases/get-user.use-case';
-import { UpdateUserUseCase } from '../application/use-cases/update-user.use-case';
 import { CreateUserDto } from '../application/dtos/create-user.dto';
 import { UpdateUserDto } from '../application/dtos/update-user.dto';
 
@@ -36,15 +30,6 @@ describe('UserController', () => {
         {
           provide: UserService,
           useClass: MockUserService,
-        },
-        CreateUserUseCase,
-        GetUserUseCase,
-        UpdateUserUseCase,
-        DeleteUserUseCase,
-        GetAllUsersUseCase,
-        {
-          provide: 'IUserRepository',
-          useClass: UserRepositoryMock,
         },
       ],
     }).compile();
